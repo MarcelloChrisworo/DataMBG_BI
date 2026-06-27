@@ -1,19 +1,38 @@
 import streamlit as st
 
+
 st.set_page_config(
-    page_title="Dashboard MBG Indonesia",
-    page_icon="🍲",
-    layout="wide"
+    page_title="Dashboard BI - MBG Indonesia 2026",
+    layout="wide",
+    initial_sidebar_state="expanded",
 )
 
-st.image("https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=2070&auto=format&fit=crop", use_column_width=True)
-st.title("Sistem Informasi Makan Bergizi Gratis (MBG)")
-st.markdown("---")
+st.markdown(
+    """
+<style>
+    [data-testid="metric-container"] {
+        background-color: #f0f4ff;
+        border: 1px solid #d0d9f0;
+        border-radius: 10px;
+        padding: 12px 16px;
+    }
+    .block-container { padding-top: 1.5rem; }
+</style>
+""",
+    unsafe_allow_html=True,
+)
 
-# Define pages
-pg_nasional = st.Page("pages/1_Nasional.py", title="Dashboard General", icon="🇮🇩")
-pg_provinsi = st.Page("pages/2_Provinsi.py", title="Insight Per Provinsi", icon="📍")
+pages = [
+    ("pages/1_Nasional.py", "Dashboard Nasional"),
+    ("pages/2_Provinsi.py", "Lihat Detail Provinsi"),
+]
 
-# Setup Navigation
-pg = st.navigation([pg_nasional, pg_provinsi])
-pg.run()
+if hasattr(st, "Page") and hasattr(st, "navigation"):
+    pg = st.navigation([st.Page(path, title=title) for path, title in pages])
+    pg.run()
+else:
+    st.title("Dashboard BI - MBG Indonesia 2026")
+    st.error(
+        "This app needs Streamlit 1.36 or newer for st.Page/st.navigation. "
+        "Upgrade it with: pip install --upgrade streamlit"
+    )
